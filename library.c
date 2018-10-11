@@ -32,7 +32,6 @@ void initPlayers(player_t *players) {
             players[i].stable[j].position = -1;
         }
     }
-
 }
 
 int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition){
