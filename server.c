@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "library.h"
 
 
@@ -10,6 +11,13 @@ int main(int argc, char* argv[]) {
     nextPlayer = init(&theGame);
 
     if (test()!=0)return 0;
+
+    printf("Start 4 players ");
+    for (i = 0; i < NB_PLAYER; ++i) {
+        execlp("./player","./player",(char)i,(char)NULL);
+    }
+
+
 
     do{
         display(&theGame);

@@ -6,7 +6,7 @@
 //-----PRIVATE FONCTIONS--------
 //#############################
 
-int displayError(error_t* error){
+int displayError(error_t *error) {
     if (error->childFuncName !=NULL && error->funcName!=NULL && error->errCode != 0){
         fprintf(stderr,"\n%s() \t->\t%s() \t->\t %s\n",error->funcName,error->childFuncName, error->msg);
     } else if (error->errCode!=0){
@@ -34,7 +34,29 @@ void initPlayers(player_t *players) {
     }
 }
 
-int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition){
+int isThereObstacle(game_t *game, int position, int dice, int stairsEntrancePosition) {
+    int i;
+
+    for (i = 1 ; i < dice; i = i+1) {
+        if(game->board[(i+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER)].id_player != -1 || (i+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER) == stairsEntrancePosition){//there is an obstacle
+            return position + 2 * i - dice;
+        }
+    }
+    return (dice+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER);
+}
+
+int nextStair(int position, int stairsEntrancePosition, int firstStair) {
+
+    if (position == stairsEntrancePosition ){//first stair
+        return firstStair;
+    } else if(position == (firstStair+NB_STAIRS_BY_PLAYER-1)) {//last stair
+        return -2;
+    } else {//others
+        return position+1;
+    }
+}
+
+int goToSquare(game_t *theGame, int idPlayer, int idHorse, int newPosition) {
     if ( newPosition >= NB_SQUARE_BOARD || newPosition < -2 || idPlayer<0 || idPlayer >= NB_PLAYER || idHorse < 0 || idHorse >= NB_HORSE_BY_PLAYER ){//bad arguments
         error_t newError;
         newError.funcName = __func__;
@@ -75,35 +97,6 @@ int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition){
     return 0;
 }
 
-int nextStair(int position, int stairsEntrancePosition, int firstStair){
-
-    if (position == stairsEntrancePosition ){//first stair
-        return firstStair;
-    } else if(position == (firstStair+NB_STAIRS_BY_PLAYER-1)) {//last stair
-        return -2;
-    } else {//others
-        return position+1;
-    }
-}
-
-/**
- *
- * @param game
- * @param position
- * @param dice
- * @param stairsEntrancePosition
- * @return the next position
- */
-int isThereObstacle(game_t *game, int position, int dice, int stairsEntrancePosition) {
-    int i;
-
-    for (i = 1 ; i < dice; i = i+1) {
-        if(game->board[(i+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER)].id_player != -1 || (i+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER) == stairsEntrancePosition){//there is an obstacle
-            return position + 2 * i - dice;
-        }
-    }
-    return (dice+position)%(NB_SQUARE_BY_PLAYER*NB_PLAYER);
-}
 
 
 //#############################

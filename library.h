@@ -14,7 +14,6 @@
 //#############################
 //--------- STRUCTURES --------
 //#############################
-
 typedef enum {false, true} bool;
 
 typedef struct {
@@ -61,11 +60,23 @@ typedef struct {
 
 
 
+int displayError(error_t* error);
 
+void initPlayers(player_t *players);
 
-//#############################
-//----- PUBLIC FONCTIONS ------
-//#############################
+int nextStair(int position, int stairsEntrancePosition, int firstStair);
+
+int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition);
+
+/**
+ *
+ * @param game
+ * @param position
+ * @param dice
+ * @param stairsEntrancePosition
+ * @return the next position
+ */
+int isThereObstacle(game_t *game, int position, int dice, int stairsEntrancePosition);
 
 /**
  * initialyze the board (and the players for now
