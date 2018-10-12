@@ -15,7 +15,7 @@ int displayError(error_t* error){
     return error->errCode;
 }
 
-void initPlayers(player_t *players) { //initialise le player
+void initPlayers(player_t *players) {               //initialise le player
     int i ,j;
     char* playerName[4];
     playerName[0] = "toto_0";
@@ -35,7 +35,7 @@ void initPlayers(player_t *players) { //initialise le player
 
 }
 
-int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition){
+int goToSquare (game_t *theGame, int idPlayer, int idHorse, int newPosition){       //permet de mettre le cheval a la nouvelle position
     if ( newPosition >= NB_SQUARE_BOARD || newPosition < -2 || idPlayer<0 || idPlayer >= NB_PLAYER || idHorse < 0 || idHorse >= NB_HORSE_BY_PLAYER ){//bad arguments
         error_t newError;
         newError.funcName = __func__;
@@ -234,15 +234,16 @@ void diplayPlayer(player_t *player) {
 
 }
 
-int play(game_t* theGame, int idPlayer, int idHorse, int dice) {
+int play(game_t* theGame, int idPlayer, int idHorse, int dice) { 
 
     int i;
-    theGame->players[idPlayer].nb_coups++;
-    int stairsEntrancePosition = (NB_SQUARE_BY_PLAYER*NB_PLAYER+NB_SQUARE_BY_PLAYER*idPlayer-1)%(NB_PLAYER*NB_SQUARE_BY_PLAYER);
-    int firstStair = NB_SQUARE_BY_PLAYER*NB_PLAYER+NB_STAIRS_BY_PLAYER*idPlayer;
-    int position = theGame->players[idPlayer].stable[idHorse].position;
+    theGame->players[idPlayer].nb_coups++;  //On incremente le nombre de coups du joueur
+    int stairsEntrancePosition = (NB_SQUARE_BY_PLAYER*NB_PLAYER+NB_SQUARE_BY_PLAYER*idPlayer-1)%(NB_PLAYER*NB_SQUARE_BY_PLAYER);  //fin du tour avant de rentrer dans l'escalier
+    int firstStair = NB_SQUARE_BY_PLAYER*NB_PLAYER+NB_STAIRS_BY_PLAYER*idPlayer;  //premier escalier
+    int position = theGame->players[idPlayer].stable[idHorse].position;     //le numero de la case ou le cheval est.
     //invalid horse->next player , other argument trusted todo : test 0<dice<7
-    if (idHorse>=NB_HORSE_BY_PLAYER || idHorse<0){
+    if (idHorse>=NB_HORSE_BY_PLAYER || idHorse<0){  //0<idhorse<4
+        //si le joueur a mis un cheval qui n'existe pas on le passe au joueur suivant 
         for (i = idPlayer+1; i != idPlayer; ++i) {
             i%=NB_PLAYER;
             if (!theGame->players[i].has_ended) return i;
@@ -251,8 +252,8 @@ int play(game_t* theGame, int idPlayer, int idHorse, int dice) {
     }
 
 
-    if(position == -2){//############################################################################### already ended
-        return idPlayer;
+    if(position == -2){//############################################################################### already ended fini la course
+        return idPlayer; 
     } else if (position == -1) {//###################################################################### wanna escape stable
         if (dice==6){
             goToSquare(theGame, idPlayer, idHorse, NB_SQUARE_BY_PLAYER*idPlayer);
