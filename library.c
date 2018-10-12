@@ -15,7 +15,7 @@ int displayError(error_t* error){
     return error->errCode;
 }
 
-void initPlayers(player_t *players) {
+void initPlayers(player_t *players) { //initialise le player
     int i ,j;
     char* playerName[4];
     playerName[0] = "toto_0";
@@ -25,10 +25,10 @@ void initPlayers(player_t *players) {
     for (i = 0; i < NB_PLAYER; ++i) {
         players[i].has_ended = false;
         players[i].name = playerName[i];
-        players[i].id = i;
-        players[i].nb_coups=0;
+        players[i].id = i;                          //identifie le joueur
+        players[i].nb_coups=0;                      //le nombre de coup a joué 
         for (j = 0; j < NB_HORSE_BY_PLAYER; ++j) {
-            players[i].stable[j].id = j;
+            players[i].stable[j].id = j;            
             players[i].stable[j].position = -1;
         }
     }
