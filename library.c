@@ -242,7 +242,7 @@ int play(game_t* theGame, int idPlayer, int idHorse, int dice) {
     int firstStair = NB_SQUARE_BY_PLAYER*NB_PLAYER+NB_STAIRS_BY_PLAYER*idPlayer;  //premier escalier
     int position = theGame->players[idPlayer].stable[idHorse].position;     //le numero de la case ou le cheval est.
     //invalid horse->next player , other argument trusted todo : test 0<dice<7
-    if (idHorse>=NB_HORSE_BY_PLAYER || idHorse<0){  //0<idhorse<4
+    if (idHorse>=NB_HORSE_BY_PLAYER || idHorse<0){  //0>idhorse>=3
         //si le joueur a mis un cheval qui n'existe pas on le passe au joueur suivant 
         for (i = idPlayer+1; i != idPlayer; ++i) {
             i%=NB_PLAYER;
@@ -253,8 +253,10 @@ int play(game_t* theGame, int idPlayer, int idHorse, int dice) {
 
 
     if(position == -2){//############################################################################### already ended fini la course
+       //si la position est egale a -2 : fin de jeu
         return idPlayer; 
     } else if (position == -1) {//###################################################################### wanna escape stable
+       // si la position est egale a -1 : à l'ecurie
         if (dice==6){
             goToSquare(theGame, idPlayer, idHorse, NB_SQUARE_BY_PLAYER*idPlayer);
         }
